@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>会议纪要助手</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.4rem; }
+    textarea { width: 100%; min-height: 160px; box-sizing: border-box; padding: 0.6rem; }
+    button { margin-top: 0.75rem; padding: 0.5rem 1rem; cursor: pointer; }
+    button:disabled { opacity: 0.6; cursor: wait; }
+    #out { margin-top: 1.5rem; white-space: pre-wrap; background: #f5f5f5; padding: 1rem; border-radius: 8px; min-height: 80px; }
+  </style>
+</head>
+<body>
+  <h1>会议 / 课堂记录 → 纪要 + 行动项</h1>
+  <p>粘贴记录后点按钮；由本机服务调用 DeepSeek（Key 不在网页里）。</p>
+  <textarea id="input" placeholder="在此粘贴会议或课堂记录…"></textarea>
+  <br />
+  <button type="button" id="btn">生成纪要</button>
+  <div id="out">结果会显示在这里。</div>
+  <script>
+    document.getElementById("btn").onclick = async function () {
+      var text = document.getElementById("input").value.trim();
+      var out = document.getElementById("out");
+      var btn = document.getElementById("btn");
+      if (!text) {
+        out.textContent = "请先粘贴一段记录。";
+        return;
+      }
+      btn.disabled = true;
+      out.textContent = "生成中…";
+      try {
+        var r = await fetch("/api/summarize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: text }),
+        });
+        var data = await r.json();
+        if (!r.ok) {
+          out.textContent = "出错：" + (data.error || r.status);
+        } else {
+          out.textContent = data.result || "(空结果)";
+        }
+      } catch (e) {
+        out.textContent = "请求失败：请确认已运行 node server.js，并用 http://localhost:3000 打开。";
+      }
+      btn.disabled = false;
+    };
+  </script>
+</body>
+</html>
