@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>会议纪要助手</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.4rem; }
+    textarea { width: 100%; min-height: 160px; box-sizing: border-box; padding: 0.6rem; }
+    button { margin-top: 0.75rem; padding: 0.5rem 1rem; cursor: pointer; }
+    #out { margin-top: 1.5rem; white-space: pre-wrap; background: #f5f5f5; padding: 1rem; border-radius: 8px; min-height: 80px; }
+  </style>
+</head>
+<body>
+  <h1>会议 / 课堂记录 → 纪要 + 行动项</h1>
+  <p>把凌乱记录粘贴到下面，点按钮后会显示整理结果（下一步再接 DeepSeek）。</p>
+  <textarea id="input" placeholder="在此粘贴会议或课堂记录…"></textarea>
+  <br />
+  <button type="button" id="btn">生成纪要（演示）</button>
+  <div id="out">结果会显示在这里。</div>
+  <script>
+    document.getElementById("btn").onclick = function () {
+      var text = document.getElementById("input").value.trim();
+      if (!text) {
+        document.getElementById("out").textContent = "请先粘贴一段记录。";
+        return;
+      }
+      document.getElementById("out").textContent =
+        "【演示】你粘贴了 " + text.length + " 个字。\n\n" +
+        "纪要：\n（下一步接 API 后这里会出现真正纪要）\n\n" +
+        "行动项：\n（下一步接 API 后这里会出现清单）\n\n" +
+        "原文预览：\n" + text.slice(0, 200) + (text.length > 200 ? "…" : "");
+    };
+  </script>
+</body>
+</html>
