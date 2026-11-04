@@ -15,3 +15,5 @@
 ## 说明
 - Key 只放本机 `.env`，已在 `.gitignore`，不要提交到 GitHub
 - 网页只请求本机 `/api/summarize`，由 Node 转发 DeepSeek
+## 演示样例
+真实车间周会记录（已脱敏）→ 纪要 + 行动项 + 待确认：见 `docs/demo-real-notes.png`。
