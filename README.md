@@ -17,3 +17,5 @@
 - 网页只请求本机 `/api/summarize`，由 Node 转发 DeepSeek
 ## 演示样例
 真实车间周会记录（已脱敏）→ 纪要 + 行动项 + 待确认：见 `docs/demo-real-notes.png`。
+
+演示视频见 [docs/demo.mp4](docs/demo.mp4)
