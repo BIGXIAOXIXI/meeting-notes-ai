@@ -18,9 +18,12 @@ app.post("/api/summarize", async (req, res) => {
     return res.status(500).json({ error: "缺少 DEEPSEEK_API_KEY，请检查 .env" });
   }
 
-  const prompt =
-    "你是会议/课堂纪要助手。根据用户凌乱记录，输出两段中文：\n" +
-    "1) 纪要（要点条目）\n2) 行动项（可执行清单，每条尽量含负责人或待办）。\n不要编造原文没有的事实。";
+    const prompt =
+    "你是会议/课堂纪要助手。只根据用户原文整理，不编造。\n" +
+    "严格按下面格式输出中文：\n" +
+    "## 纪要\n- 条目要点（3～8条）\n" +
+    "## 行动项\n- [ ] 待办；尽量含负责人或截止日期（原文没有就写「待定」）\n" +
+    "若信息不足，在文末加一行：## 待确认";
 
   try {
     const r = await fetch("https://api.deepseek.com/chat/completions", {
