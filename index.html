@@ -23,9 +23,27 @@
   <div class="row">
     <button type="button" class="secondary" id="ex1">示例：产品周会</button>
     <button type="button" class="secondary" id="ex2">示例：课堂笔记</button>
-    <button type="button" id="btn">生成纪要</button>
+    <button type="button" id="btn">生成纪要    <button type="button" class="secondary" id="copy">复制结果</button>
   </div>
   <div id="out">结果会显示在这里。</div>
+    document.getElementById("copy").onclick = async function () {
+      var out = document.getElementById("out");
+      var text = out.textContent || "";
+      if (!text || text === "结果会显示在这里。" || text.indexOf("正在生成") === 0) {
+        out.className = "err";
+        out.textContent = "还没有可复制的纪要，先点「生成纪要」。";
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        var old = text;
+        out.className = "";
+        out.textContent = old + "\n\n（已复制到剪贴板）";
+      } catch (e) {
+        out.className = "err";
+        out.textContent = "复制失败：请手动全选结果 Ctrl+C。";
+      }
+    };
   <script>
     var exMeeting =
       "今天产品周会。小王说落地页转化率上周掉到 2.1%，怀疑是新 Banner。小李负责本周五前出 A/B 方案，对照旧版。设计侧阿美周一给两套稿。技术老陈提到接口偶发超时，先加 3 秒重试，本周三前合到测试环境。下周四全员评审 Demo，材料提前一天发群。";
